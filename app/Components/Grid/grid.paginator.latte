@@ -1,0 +1,30 @@
+
+<!-- PAGINATOR -->
+
+{define paginator , int $page, int $pageRange, int $lastPage}
+	{snippet paginatorSnippet}
+		<ul class="pagination">
+			{foreach $pageRange as $p}
+				{first}
+					<li>
+					<a n:href="changePage!, 1, $sort" class="ajax">
+						<i class="material-icons">chevron_left</i>
+					</a>
+					</li>
+				{/first}
+				<li n:class="$p == $page ? active">
+					<a n:href="changePage!, $p , $sort" class="ajax">{$p}</a>
+				</li>
+				{last}.....{/last}
+			{/foreach}
+			<li n:class="$page == $lastPage ? active">
+				<a n:href="changePage!, $lastPage, $sort" class="ajax">{$lastPage}</a>
+			</li>
+			<li>
+				<a n:href="changePage!, $lastPage, $sort" class="ajax">
+					<i class="material-icons">chevron_right</i>
+				</a>
+			</li>
+		</ul>
+	{/snippet}
+{/define}

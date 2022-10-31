@@ -1,0 +1,29 @@
+
+<!-- GENERIC FORM -->
+{define genericform string $nameform}
+<form n:name=$nameform class=form>
+	<p><label n:name=name>Značka: <input n:name=name size=30></label>
+	</p>
+	<p class="right-align">
+		<a n:href=":view" class="btn btn-small blue">Spät</a>
+		<input n:name=send class="btn btn-small blue">
+	</p>
+</form>
+{/define}
+
+
+<!-- CREATE A EDIT FORM -->
+
+{define createedit string $head, string $nameform}
+<div class="row">
+	<div class="col s6 offset-s3">
+		<h5>{$head}</h5>
+	</div>
+</div>
+<div class="row">
+	<div class="col s6 offset-s3">
+		{include genericform nameform: $nameform}
+	</div
+</div>
+{/define}
+

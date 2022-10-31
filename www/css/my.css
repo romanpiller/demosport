@@ -1,0 +1,23 @@
+span { color: #039be5; }
+
+body { 
+	   background: white; 
+	   color: black; margin: 2em auto; padding: 0 .5em; 
+	   max-width: 940px; 
+	   min-width: 320px; 
+}
+
+/* flash message */
+.error { background-color: #ffe6e6 ;}
+.warning { background-color: #ffffe6 ;}
+.info { background-color: #e6ffe6 ;}
+
+.flash { 
+	margin-top:16px; margin-bottom:16px;
+	padding:0.2em 16px; 
+}
+
+/* tabulka */
+td, td {
+	padding: 8px 5px 8px 5px;
+}

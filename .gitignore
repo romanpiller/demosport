@@ -1,0 +1,11 @@
+vendor/*
+composer.lock
+composer.phar
+bin/web
+
+# netbeans
+nbproject/*
+
+# test
+tests/*/output/*
+tests/_support/_generated

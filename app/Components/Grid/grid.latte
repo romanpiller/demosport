@@ -1,0 +1,126 @@
+
+<!-- FLASH - component flash -->
+
+{define flash , string $message, string $type}
+	<div class="row">
+		<div class="col s12">
+			{switch $type}
+				{case error}
+				<div class="flash error">{$message}</div>
+			{case warning}
+				<div class="flash warning">{$message}</div>
+			{default} <!-- info -->
+				<div class="flash info">{$message}</div>
+			{/switch}
+		</div>
+	</div>
+{/define}
+
+
+<!-- MODAL - delete window -->
+
+{define modaldelete, int $id}
+<div id="id-{$id}" class="modal">
+	<div class="modal-content">
+		<h5 class="center-align">Mazanie značky</h5>
+		<p class="center-align">Skutočne chcete zmazať značku ?</p>
+		<div class="modal-footer">
+			<span onclick="document.getElementById('id-{$id}').style.display='none'" class="btn-small blue">Zrušiť</span>
+			<a n:href=":delete $id" class="red btn-small">Zmaž</a>
+		</div>
+	</div>
+</div>
+{/define}
+
+
+<!-- TABLE HEAD -->
+
+{define tablehead}
+<tr>
+	<th class="left-align valign-wrapper">Názov
+		<a n:href="sort! true" class="ajax">
+			<i class="material-icons">arrow_upward</i>
+		</a>
+		<a n:href="sort! false" class="ajax">
+			<i class="material-icons">arrow_downward</i>
+		</a>
+	</th>
+	<th class="right-align">Akcie</th>
+</tr>
+{/define}
+
+
+<!-- TABLE BODY -->
+
+{define tablebody , int $id, string $name}
+<tr>
+	<td class="left-align">{$name}</td>
+	<td class="right-align">
+		<span onclick="document.getElementById('id-{$id}').style.display = 'block'"
+			  class="spanclick">Zmaž</span>
+		{include modaldelete, id: $id}
+		<a n:href=":edit $id">Uprav</a>
+	</td>
+</tr>
+{/define}
+
+
+<!-- TABLE FOOTER -->
+
+{define tablefoot}
+<div class="row valign-wrapper">
+	<div class="col m2 s4 left-align">
+		{control changeRowsPerPageForm}
+	</div>
+	<div class="col m10 s8 right-align">
+		{include paginator from grid.paginator.latte page: $page, pageRange: $pageRange, lastPage: $lastPage}
+	</div>
+</div>
+{/define}
+
+
+<!-- TABLE -->
+
+{define table}
+{snippet tableSnippet}
+	<div class="row">
+		<div class="col s12">
+			{foreach $brands as $brand}
+				{first}
+					<table class="highlight">
+						<thead>{include tablehead}</thead>
+						<tbody>
+				{/first} 
+						{include tablebody id: $brand->id, name: $brand->name}
+				{last}
+						</tbody>
+					</table>
+				{/last}
+			{/foreach} <!-- foreach -->
+		</div> <!-- col -->
+	</div> <!-- row -->
+	{include tablefoot}
+{/snippet}
+{/define}
+
+
+<!-- MAIN BLOCK -->
+
+{block content}
+	{foreach $flashes as $flash}
+		{include flash message: $flash->message, type: $flash->type}
+	{/foreach}
+
+	{switch $action}
+		{case create}
+			{include createedit from grid.form.latte , head: 'Vytvor Značku', nameform: 'createForm'}
+		{case edit}
+			{include createedit from grid.form.latte, head: 'Uprav Značku', nameform: 'editForm'}
+		{default}	<!-- view -->
+			{include topbuttons from grid.topbuttons.latte}
+		{snippet tableContainer}
+			{include table}
+		{/snippet}
+	{/switch}
+{/block}
+
