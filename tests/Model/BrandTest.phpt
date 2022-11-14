@@ -32,7 +32,7 @@ class BrandText extends TestCase
 	
 	protected function setUp(): void
 	{
-		Tester\Environment::lock('database');
+		Tester\Environment::lock('database', __DIR__ . '/../../temp');
 		$this->db->query('TRUNCATE TABLE brand');
 		$this->database->table('brand')->insert([
 			['name' => 'a05x'],
@@ -105,7 +105,7 @@ class BrandText extends TestCase
 			$this->brand->createBrand('bbbb');		// duplicate
 		}, Nette\Database\UniqueConstraintViolationException::class, 
 				"SQLSTATE[23000]: Integrity constraint violation: 1062"
-				. " Duplicate entry 'bbbb' for key 'name'");
+				. " Duplicate entry 'bbbb' for key 'brand.name'");
 	}
 	
 
@@ -130,7 +130,7 @@ class BrandText extends TestCase
 			$this->brand->updateBrand(6,'a09x'); // the same like id 4
 		}, Nette\Database\UniqueConstraintViolationException::class, 
 				"SQLSTATE[23000]: Integrity constraint violation: 1062"
-				. " Duplicate entry 'a09x' for key 'name'");
+				. " Duplicate entry 'a09x' for key 'brand.name'");
 	}
 
 	

@@ -46,20 +46,21 @@ final class Brand
 	/**
 	 * Return number $rowPerPage rows from page $page sorted by $sort
 	 * @param int $page
-	 * @param int $rowPerPage
+	 * @param int $rowsPerPage
 	 * @param bool $sort
 	 * @return Selection|null
 	 */
-	public function getPage	(int $page=1, int $rowPerPage = 1, bool $sort = true): Selection|null
+	public function getPage	(int $page = 1, int $rowsPerPage = 1, 
+        bool $sort = true): Selection|null
 	{
 		return $sort ? 
 			$this->database->table('brand')
 				->order('name ASC')
-				->limit($rowPerPage, $rowPerPage * ($page - 1))
+				->limit($rowsPerPage, $rowsPerPage * ($page - 1))
 				->where('deleted', false) :
 			$this->database->table('brand')
 				->order('name DESC')
-				->limit($rowPerPage, $rowPerPage * ($page - 1))
+				->limit($rowsPerPage, $rowsPerPage * ($page - 1))
 				->where('deleted', false);
 	}
 	
@@ -68,6 +69,7 @@ final class Brand
 	 * Insert record to database
 	 * @param string $brand
 	 * @return ActiveRow|bool
+     * @throws Nette\Database\UniqueConstraintViolationException
 	 */
 	public function createBrand(string $brand): ActiveRow|int|bool
 	{
@@ -83,6 +85,7 @@ final class Brand
 	 * @param int $id
 	 * @param string $brand
 	 * @return int number of updated rows
+     * @throws Nette\Database\UniqueConstraintViolationException
 	 */
 	public function updateBrand(int $id, string $brand): int
 	{

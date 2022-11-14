@@ -3,4 +3,4 @@ parameters:
 database:
 	dsn: 'mysql:host=127.0.0.1;dbname=sportdbtest'
 	user: 'root'
-	password: ''
+	password: 'freedom'

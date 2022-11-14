@@ -36,7 +36,7 @@ class Bootstrap
 		$configurator = self::_boot();
 		
 		//$configurator->setDebugMode('secret@23.75.345.200'); // enable for your remote IP
-		$configurator->setDebugMode(false);
+		$configurator->setDebugMode(true);
 		$configurator->enableTracy(self::$appDir . '/log');
 
 		$configurator->addConfig(self::$appDir . '/config/prod.neon');
@@ -50,6 +50,7 @@ class Bootstrap
 	
 		Environment::setup();
 		
+		$configurator->setDebugMode(true);
 		$configurator->addConfig(self::$appDir . '/config/test.neon');
 
 		return $configurator;

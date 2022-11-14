@@ -2,18 +2,27 @@
 <!-- FLASH - component flash -->
 
 {define flash , string $message, string $type}
-	<div class="row">
+	<div id="flashmessage" class="w3-row">
 		<div class="col s12">
 			{switch $type}
 				{case error}
-				<div class="flash error">{$message}</div>
+				<div class="flash error w3-panel"><p>{$message}</p></div>
 			{case warning}
-				<div class="flash warning">{$message}</div>
+				<div class="flash warning w3-panel"><p>{$message}</p></div>
 			{default} <!-- info -->
-				<div class="flash info">{$message}</div>
+			<div class="flash info w3-panel"><p>{$message}</p></div>
 			{/switch}
 		</div>
 	</div>
+	<script>
+		
+		setTimeout(flashOut, 5000);
+
+		function flashOut() {
+			document.getElementById("flashmessage").style.display = "none";
+		}
+		
+	</script>
 {/define}
 
 
@@ -118,9 +127,9 @@
 			{include createedit from grid.form.latte, head: 'Uprav Značku', nameform: 'editForm'}
 		{default}	<!-- view -->
 			{include topbuttons from grid.topbuttons.latte}
-		{snippet tableContainer}
-			{include table}
-		{/snippet}
+			{snippet tableContainer}
+				{include table}
+			{/snippet}
 	{/switch}
 {/block}
 

@@ -19,6 +19,10 @@ final class BrandPresenter extends Nette\Application\UI\Presenter
 		private GridControlFactory $gridControlFactory,
 		){}
     
+    /**
+     * Create component, call factory defined in service.neon
+     * @return GridControl
+     */
 	public function createComponentGrid(): GridControl
 	{
 		return $this->gridControlFactory->create($this->brand);
