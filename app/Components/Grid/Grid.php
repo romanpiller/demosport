@@ -12,7 +12,7 @@ use App\Model\Brand;
 
 final class GridControl extends Control
 {
-	/** @persistent */
+	
 	public int $page = 1;
 	
 	/** @persistent */
@@ -20,6 +20,8 @@ final class GridControl extends Control
 	
 	/** @persistent */
 	public bool $sort = true; // zoradene 0/1 desc/asc
+    
+    private int $lastPage = 1;
 	
 	/** @var array<int> */
 	private array $rowsPerPageDefined = [3,6,9,12,15,0];
@@ -53,9 +55,9 @@ final class GridControl extends Control
 	 * @param int $count number of databse record
 	 * @return int
 	 */
-	private function getLastPage(int $count): int 
+	private function getLastPage(): int 
 	{
-		
+		$count = $this->brand->getCount();
 		return (int) ceil($count / 
 				($this->rowsPerPageDefined[$this->rowsPerPageIndex] ?: $count) );
 	}
@@ -129,7 +131,8 @@ final class GridControl extends Control
 	public function handleChangePage(int $page, bool $sort): void
 	{
 		$this->sort = $sort;
-		$this->page = max($page,1);
+        $this->lastPage = $this->getLastPage();
+		$this->page = min(max($page,1), $this->lastPage);
 		$this->redrawControl('tableContainer');
 	}
 	
@@ -290,10 +293,9 @@ final class GridControl extends Control
 	public function render(): void
 	{
 		// pocet zaznamov v tabulke celkom
-		$count = $this->brand->getCount();
-		$lastPage = $this->getLastPage($count);
-		$rowsPerPage = $this->getRowsPerPage();
 
+		$rowsPerPage = $this->getRowsPerPage();
+        $this->lastPage = $this->getLastPage();
 
 		// smer zoradenia
 		
@@ -305,14 +307,15 @@ final class GridControl extends Control
 
 		// hranice stranok pre paginator 5 stranok
 		$lowPageRange = max($this->page - 2, 1);
-		$pageRange = range($lowPageRange, 
-						min($lowPageRange + 4, 
-								max($lastPage - 1,1))); 
+        $highPageRange = min($lowPageRange + 4, 
+								max($this->lastPage - 1,1));  
+		$pageRange = range($lowPageRange, $highPageRange);
+						
 
 		$this->template->action = $this->action;
 		$this->template->sort = $this->sort;
 		$this->template->page = $this->page;
-		$this->template->lastPage = $lastPage;
+		$this->template->lastPage = $this->lastPage;
 		$this->template->pageRange = $pageRange; 
 		$this->template->rowsPerPage = $rowsPerPage;
 		
